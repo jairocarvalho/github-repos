@@ -28,4 +28,4 @@ bun dev
 
 Development Open [http://localhost:3000](http://localhost:3000)
 
-Production Demo [Here](https://github-repos-git-main-jairocarvalhos-projects.vercel.app/)
+Production Demo [Here](https://github-repos-woad.vercel.app)
