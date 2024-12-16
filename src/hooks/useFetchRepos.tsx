@@ -4,26 +4,26 @@ import { useState } from "react";
 // Formato do objeto retornado pelo hook
 export interface UseFetchReposReturn {
   repos: Repo[];
-  error: string;
-  isLoading: boolean;
+  searchError: string;
+  isSearchLoading: boolean;
   fetchRepos: (username: string) => Promise<void>;
 }
 
 export function useFetchRepos(): UseFetchReposReturn {
   const [repos, setRepos] = useState<Repo[]>([]);
-  const [error, setError] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchError, setSearchError] = useState<string>("");
+  const [isSearchLoading, setIsSearchLoading] = useState<boolean>(false);
 
   const fetchRepos = async (username: string): Promise<void> => {
-    setError("");
+    setSearchError("");
     setRepos([]);
     if (!username) {
-      setError("Please enter a GitHub username.");
+      setSearchError("Please enter a GitHub username.");
       return;
     }
 
     try {
-      setIsLoading(true);
+      setIsSearchLoading(true);
       const response = await fetch(
         `https://api.github.com/users/${username}/repos`
       );
@@ -38,14 +38,14 @@ export function useFetchRepos(): UseFetchReposReturn {
       setRepos(sortedRepos);
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message);
+        setSearchError(err.message);
       } else {
-        setError("An unexpected error occurred.");
+        setSearchError("An unexpected error occurred.");
       }
     } finally {
-      setIsLoading(false);
+      setIsSearchLoading(false);
     }
   };
 
-  return { repos, error, isLoading, fetchRepos };
+  return { repos, searchError, isSearchLoading, fetchRepos };
 }

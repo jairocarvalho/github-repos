@@ -1,11 +1,26 @@
 import RepoList from "@/components/RepoList";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
+import { UserDetailsCard } from "@/components/UserDetailsCard/UserDetailsCard";
+import { useFetchGitHubUser } from "@/hooks/useFetchGitHubUser";
 import { useFetchRepos } from "@/hooks/useFetchRepos";
 import { Github } from "lucide-react";
 import Head from "next/head";
+import { useState } from "react";
 
 export default function Home() {
-  const { repos, error, isLoading, fetchRepos } = useFetchRepos();
+  const { repos, searchError, isSearchLoading, fetchRepos } = useFetchRepos();
+  const { userData, error, fetchGitHubUser } = useFetchGitHubUser();
+  const [username, setUsername] = useState("");
+
+  const handleSearch = async (searchUsername: string) => {
+    setUsername("");
+    await fetchGitHubUser(searchUsername);
+
+    if (!error) {
+      setUsername(searchUsername);
+      await fetchRepos(searchUsername);
+    }
+  };
 
   return (
     <>
@@ -19,9 +34,25 @@ export default function Home() {
           GitHub Repositórios
         </header>
 
-        <SearchBar onSearch={fetchRepos} isLoading={isLoading} />
+        <SearchBar
+          username={username}
+          setUsername={setUsername}
+          onSearch={handleSearch}
+          isLoading={isSearchLoading}
+        />
 
-        {error && <p className="text-red-500 mt-3">{error}</p>}
+        {searchError && <p className="text-red-500 mt-3">{searchError}</p>}
+
+        {userData && (
+          <UserDetailsCard
+            avatar={userData.avatar}
+            username={username}
+            bio={userData.bio}
+            followers={userData.followers}
+            following={userData.following}
+            email={userData.email}
+          />
+        )}
 
         <div className="mt-8 w-full max-w-2xl">
           <RepoList repos={repos} />

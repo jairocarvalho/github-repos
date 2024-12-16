@@ -1,15 +1,19 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useState } from "react";
 
 interface SearchBarProps {
-  onSearch: (username: string) => void; // Função que busca repositórios
-  isLoading: boolean; // Estado de carregamento
+  username: string;
+  setUsername: (value: string) => void;
+  onSearch: (searchUsername: string) => void;
+  isLoading: boolean;
 }
 
-export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
-  const [username, setUsername] = useState("");
-
+export function SearchBar({
+  username,
+  setUsername,
+  onSearch,
+  isLoading,
+}: SearchBarProps) {
   const handleSearch = () => {
     onSearch(username);
   };
