@@ -36,7 +36,6 @@ export function useFetchGitHubUser(): UseFetchGitHubUserReturn {
 
       const data = await response.json();
 
-      // Extrair apenas os campos relevantes
       const userDetails: GitHubUser = {
         avatar: data.avatar_url,
         followers: data.followers,

@@ -1,7 +1,6 @@
 import { Repo } from "@/types/repos.types";
 import { useState } from "react";
 
-// Formato do objeto retornado pelo hook
 export interface UseFetchReposReturn {
   repos: Repo[];
   searchError: string;
@@ -31,7 +30,6 @@ export function useFetchRepos(): UseFetchReposReturn {
 
       const data: Repo[] = await response.json();
 
-      // Ordenar por número de estrelas (decrescente)
       const sortedRepos = data.sort(
         (a, b) => b.stargazers_count - a.stargazers_count
       );
