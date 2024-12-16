@@ -2,7 +2,19 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+Second, run the development server:
 
 ```bash
 npm run dev
@@ -14,6 +26,6 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Development Open [http://localhost:3000](http://localhost:3000)
 
-Demo [https://github-repos-git-main-jairocarvalhos-projects.vercel.app/](Here)
+Production Demo [Here](https://github-repos-git-main-jairocarvalhos-projects.vercel.app/)
