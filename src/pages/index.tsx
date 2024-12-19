@@ -27,7 +27,6 @@ export default function Home() {
           username={username}
           setUsername={setUsername}
           onSearch={handleSearch}
-          isLoading={false}
         />
       </div>
     </>
