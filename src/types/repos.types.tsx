@@ -5,8 +5,9 @@ export interface Repo {
   html_url: string;
   stargazers_count: number;
   language: string | null;
+  forks_count: number;
 }
 
 export interface RepoCardProps {
-  repo: Repo;
+  repo: Repo | null;
 }

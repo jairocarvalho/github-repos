@@ -1,31 +1,30 @@
 import { Repo } from "@/types/repos.types";
 import { useState } from "react";
+import { useAppContext } from "./useAppContext";
 
 export interface UseFetchReposReturn {
-  repos: Repo[];
   searchError: string;
-  isSearchLoading: boolean;
   fetchRepos: (username: string) => Promise<void>;
 }
 
 export function useFetchRepos(): UseFetchReposReturn {
-  const [repos, setRepos] = useState<Repo[]>([]);
   const [searchError, setSearchError] = useState<string>("");
-  const [isSearchLoading, setIsSearchLoading] = useState<boolean>(false);
+
+  const context = useAppContext();
+  const { dispatch } = context;
 
   const fetchRepos = async (username: string): Promise<void> => {
     setSearchError("");
-    setRepos([]);
     if (!username) {
-      setSearchError("Please enter a GitHub username.");
+      setSearchError("Insira um nome de usuário do GitHub.");
       return;
     }
 
     try {
-      setIsSearchLoading(true);
       const response = await fetch(
         `https://api.github.com/users/${username}/repos`
       );
+
       if (!response.ok) throw new Error("User not found.");
 
       const data: Repo[] = await response.json();
@@ -33,17 +32,22 @@ export function useFetchRepos(): UseFetchReposReturn {
       const sortedRepos = data.sort(
         (a, b) => b.stargazers_count - a.stargazers_count
       );
-      setRepos(sortedRepos);
+
+      // Salva no localStorage
+      localStorage.setItem(
+        "gitHubRepoUserReposData",
+        JSON.stringify(sortedRepos)
+      );
+
+      dispatch({ type: "SET_USER_REPOS", value: sortedRepos });
     } catch (err: unknown) {
       if (err instanceof Error) {
         setSearchError(err.message);
       } else {
         setSearchError("An unexpected error occurred.");
       }
-    } finally {
-      setIsSearchLoading(false);
     }
   };
 
-  return { repos, searchError, isSearchLoading, fetchRepos };
+  return { searchError, fetchRepos };
 }

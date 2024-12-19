@@ -1,3 +1,4 @@
+import React from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
@@ -5,17 +6,17 @@ interface SearchBarProps {
   username: string;
   setUsername: (value: string) => void;
   onSearch: (searchUsername: string) => void;
-  isLoading: boolean;
 }
 
-export function SearchBar({
-  username,
-  setUsername,
-  onSearch,
-  isLoading,
-}: SearchBarProps) {
+export function SearchBar({ username, setUsername, onSearch }: SearchBarProps) {
   const handleSearch = () => {
     onSearch(username);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
   };
 
   return (
@@ -25,12 +26,10 @@ export function SearchBar({
         placeholder="Digite o usuário GitHub"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="bg-white"
-        disabled={isLoading}
       />
-      <Button onClick={handleSearch} disabled={isLoading}>
-        {isLoading ? "Buscando..." : "Buscar"}
-      </Button>
+      <Button onClick={handleSearch}>{"Buscar"}</Button>
     </div>
   );
 }
